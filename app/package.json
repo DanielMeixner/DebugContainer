@@ -1,0 +1,18 @@
+{
+  "name": "dummy-node",
+  "version": "1.0.0",
+  "description": "container showing some debug infos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": {
+    "name": "Daniel Meixner"
+  },
+  "dependencies": {
+    "os":"0.1.1",
+    "express":"^4.15.4",
+    
+    "request": "^2.81.0"
+  }
+}
