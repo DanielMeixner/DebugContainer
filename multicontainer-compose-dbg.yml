@@ -1,0 +1,27 @@
+        version: '3'
+        services: 
+            red:
+                image: 'danielmeixner/dbgcon:2'
+                ports:
+                    - '80:80' 
+                environment:
+                        COLOR: 'red'
+                        SERVICEENDPOINTHOST: 'green' 
+                        SERVICEENDPOINTPORT: '80'
+                        SERVICEENDPOINTPATH: '/api/cascade'
+
+            green: 
+                image: 'danielmeixner/dbgcon:2'                
+                environment:
+                        COLOR: 'green'                        
+                        SERVICEENDPOINTHOST: 'blue' 
+                        SERVICEENDPOINTPORT: '80'
+                        SERVICEENDPOINTPATH: '/api/cascade'
+            blue: 
+                image: 'danielmeixner/dbgcon:2'             
+                environment:
+                        COLOR: 'blue'                        
+                        SERVICEENDPOINTHOST: 'localhost' 
+                        SERVICEENDPOINTPORT: '80'
+                        SERVICEENDPOINTPATH: '/ping'
+            

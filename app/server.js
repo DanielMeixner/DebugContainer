@@ -78,7 +78,7 @@ app.get('/api/cascade', function (req, res) {
                 console.log("request done ... ");
                 res.writeHead(200, { 'Content-Type': 'text/plain' });
                 console.log(data);
-                res.write(config.serviceendpointhost + " answered with ... \n\t\t\t\t | - - - " + data);
+                res.write(config.serviceendpointhost + " answered with ... \n\t\t\t\t | - - - " + "\t\t\t\t" + data);
                 res.send();
                 console.log("Done");
             });
@@ -115,6 +115,6 @@ app.get('/', function (req, res) {
         ""
     );
 });
-app.listen(80);
-console.log("running!")
+app.listen(config.port);
+console.log("running & listening on " + config.port)
 //console.log(`Running on http://${HOST}:${PORT}`);

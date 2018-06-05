@@ -1,7 +1,7 @@
 {
   "name": "dummy-node",
   "version": "1.0.0",
-  "description": "container showing some debug infos",
+  "description": "container showing some debug infos for multi container environments",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

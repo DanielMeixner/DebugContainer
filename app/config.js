@@ -1,6 +1,6 @@
 var config = {}
 
-config.port = process.env.PORT || 80;
+config.port = process.env.MYPORT || 80;
 config.color = process.env.COLOR;
 config.serviceendpointhost = process.env.SERVICEENDPOINTHOST;
 config.serviceendpointpath = process.env.SERVICEENDPOINTPATH;
