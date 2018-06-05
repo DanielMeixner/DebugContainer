@@ -21,7 +21,13 @@
                 image: 'danielmeixner/dbgcon:2'             
                 environment:
                         COLOR: 'blue'                        
-                        SERVICEENDPOINTHOST: 'localhost' 
+                        SERVICEENDPOINTHOST: 'yellow' 
+                        SERVICEENDPOINTPORT: '80'
+                        SERVICEENDPOINTPATH: '/api/whoareu'
+            yellow: 
+                image: 'danielmeixner/dbgcon:2'             
+                environment:
+                        COLOR: 'yellow'                        
+                        SERVICEENDPOINTHOST: 'yellow' 
                         SERVICEENDPOINTPORT: '80'
                         SERVICEENDPOINTPATH: '/ping'
-            
