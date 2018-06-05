@@ -10,9 +10,9 @@ Point SERVICEENDPOINTHOST to a machine running a service on port SERVICEENDPOINT
 
 The container itself has the following sites/apis so you can easily run multiple containers to do some experiments:
 
-/ --> shows some debug info
-/ping --> responds with pong
-/api/cascade --> calls SERVICEENDPOINTHOST:SERVICEENDPOINTPORT + SERVICEENDPOINTPATH
+* / --> shows some debug info
+* /ping --> responds with pong
+* /api/cascade --> calls SERVICEENDPOINTHOST:SERVICEENDPOINTPORT + SERVICEENDPOINTPATH
 
 I recommend to provide also a COLOR. This will paint your screen when calling / and also serve as identifier for the container.
 
