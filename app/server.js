@@ -78,7 +78,7 @@ app.get('/api/cascade', function (req, res) {
                 console.log("request done ... ");
                 res.writeHead(200, { 'Content-Type': 'text/plain' });
                 console.log(data);
-                res.write(config.serviceendpointhost + " answered with ... \n\t\t\t\t | - - - " + "\t\t\t\t" + data);
+                res.write(config.serviceendpointhost + " answered with ... \n\t\t\t\t | \n\t\t\t\t | \n\t\t\t\t |  \n\t\t\t\t v \n" + data);
                 res.send();
                 console.log("Done");
             });
@@ -96,14 +96,13 @@ app.get('/', function (req, res) {
     tabs = "\t\t";
 
     res.end('<html><body bgcolor='+ config.color + '><h1>DebugContainer</h1>' +
-        "<p>Make sure you started this container with a command like this: </p>" +
-        "<i>docker run -it -p 8081:80  -e SERVICEENDPOINTHOST='172.17.0.1' -e SERVICEENDPOINTPATH='/api/whoareu' -e COLOR=red -e SERVICEENDPOINTPORT='8082'  dbgcon</i>" +
+        "<p>Make sure you started this container as described <a href=\"https://github.com/DanielMeixner/DebugContainer\">here</a>. </p>" +
         "<p>You can start this container multiple times locally. Make sure you provide your docker bridge gateway IP as SERVICEENDPOINTHOST.</p>"+
         
-        "<p>Get /api/cascade to query serviceendpoint1 + serviceendpointpath + serviceendpointport.</p>" +
+        "<p>Get <a href=\"/api/cascade\">/api/cascade</a> to query serviceendpoint1 + serviceendpointpath + serviceendpointport.</p>" +
         "SERVICEENDPOINTHOST=" + tabs + config.serviceendpointhost + "</br>" +
-        "SERVERPATH=" + tabs + config.serviceendpointpath + "</br>" +
-        "SERVERPORT=" + tabs + config.serviceendpointport + "</br>" +
+        "SERVICEENDPOINTPATH=" + tabs + config.serviceendpointpath + "</br>" +
+        "SERVICEENDPOINTPORT=" + tabs + config.serviceendpointport + "</br>" +
         
         "Port=" + tabs + config.port + "</br>" +
         "Color=" + tabs + config.color + "</br>" +
