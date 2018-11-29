@@ -45,7 +45,7 @@ spec:
             value: "demobackend"
           - name: "SERVICEENDPOINTPATH"
             value: "/api/whoareu"              
-          - name: "color"
+          - name: "COLOR"
             value: "red"
           - name: "SERVICEENDPOINTPORT"
             value: "80"
