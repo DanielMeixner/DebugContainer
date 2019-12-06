@@ -3,9 +3,7 @@ name: PRFlow DebugContainer
 on: 
   pull_request:
     branches:
-    - dsbranch
-    paths:
-    - /
+    - dsbranch  
 
 jobs:
   build:
