@@ -1,4 +1,4 @@
-name: PRFlow Bikes
+name: PRFlow DebugContainer
 
 on: 
   pull_request:
