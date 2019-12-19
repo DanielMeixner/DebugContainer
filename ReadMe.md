@@ -54,7 +54,7 @@ When you start the container it will offer you 3 endpoints:
 You can run the yamls/3svc.yaml to get an easy setup in Kubernetes with 3 services where A is calling B and B is calling C.
 Just run 
 ```
-kubectl run -f https://raw.githubusercontent.com/DanielMeixner/DebugContainer/master/yamls/3svc.yaml
+kubectl apply -f https://raw.githubusercontent.com/DanielMeixner/DebugContainer/master/yamls/3svc.yaml
 ```
 
 Then run
