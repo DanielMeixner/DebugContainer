@@ -1,0 +1,37 @@
+kind: helm-release
+apiVersion: 1.1
+build:
+  context: .
+  dockerfile: Dockerfile
+install:
+  chart: charts/debugcontainer
+  values:
+  - values.dev.yaml?
+  - secrets.dev.yaml?
+  set:
+    # Optionally, specify an array of imagePullSecrets. These secrets must be manually created in the namespace.
+    # This will override the imagePullSecrets array in values.yaml file.
+    # If the dockerfile specifies any private registry, the imagePullSecret for that registry must be added here.
+    # ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+    #
+    # For example, the following uses credentials from secret "myRegistryKeySecretName".
+    #
+    # imagePullSecrets:
+    #   - name: myRegistryKeySecretName
+    replicaCount: 1
+    image:
+      repository: debugcontainer
+      tag: $(tag)
+      pullPolicy: Never
+    ingress:
+      annotations:
+        kubernetes.io/ingress.class: traefik-azds
+      hosts:
+      # This expands to form the service's public URL: [space.s.][rootSpace.]debugcontainer.<random suffix>.<region>.azds.io
+      # Customize the public URL by changing the 'debugcontainer' text between the $(rootSpacePrefix) and $(hostSuffix) tokens
+      # For more information see https://aka.ms/devspaces/routing
+      - $(spacePrefix)$(rootSpacePrefix)debugcontainer$(hostSuffix)
+configurations:
+  develop:
+    build:
+      useGitIgnore: true

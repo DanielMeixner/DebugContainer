@@ -10,9 +10,9 @@
     "name": "Daniel Meixner"
   },
   "dependencies": {
-    "os":"0.1.1",
-    "express":"^4.15.4",
-    
-    "request": "^2.81.0"
+    "express": "^4.15.4",
+    "os": "0.1.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.5"
   }
 }
