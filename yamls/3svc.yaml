@@ -65,7 +65,7 @@ spec:
         app: dbg
     spec:
       containers:
-      - name: demofrontend
+      - name: appa
         image: danielmeixner/debugcontainer:latest
         ports:
           - containerPort: 80
@@ -101,7 +101,7 @@ spec:
         app: dbg
     spec:
       containers:
-      - name: demofrontend
+      - name: appb
         image: danielmeixner/debugcontainer:latest
         ports:
           - containerPort: 80
