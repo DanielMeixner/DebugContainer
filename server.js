@@ -28,7 +28,7 @@ getHostIps = function () {
 // Routes
 app.get('/ping', function (req, res) {
     console.log('received ping');
-    res.send('Pong');
+    res.send('Pong, Pong');
 });
 
 app.get('/api/whoareu', function (req, res) {
@@ -70,6 +70,8 @@ app.get('/api/cascade', function (req, res) {
 
     console.log("start cascading... " + url);
 
+      
+
     // call next service
     rp.get(url)
         .then(function (data) {
@@ -79,10 +81,23 @@ app.get('/api/cascade', function (req, res) {
             // first part of answer is info about this service
             var html = createHTMLInfo(currentposition, url, clientIP, htmlrequesticon);
 
+            // pass on header for azds
+            var azdsroute=req.headers['azds-route-as']; 
+
             if (currentposition > 0) {
                 // contenttype will be defined by wrapping call
-                res.writeHead(200, { 'Content-Type': 'text/plain' });
 
+                
+                if (azdsroute!=undefined)
+                {
+                    res.writeHead(200, { 'Content-Type': 'text/plain', 'azds-route-as': azdsroute });
+                    console.log("Route: azdsroute " + azdsroute)
+                }
+                else
+                {
+                    res.writeHead(200, { 'Content-Type': 'text/plain' });
+                    console.log("no azds")
+                }
                 // second part of answer is the answer we got from the subsequent call - wrapped in a way that it doesn't break our html
                 res.write(html + wrapdata(data));
             }
@@ -105,7 +120,17 @@ app.get('/api/cascade', function (req, res) {
                     "<h1>Cascading API calls</h1>";                
                 var htmlend = "</body></html>";
               
-                res.writeHead(200, { 'Content-Type': 'text/html' });
+                if (azdsroute!=undefined)
+                {
+                    res.writeHead(200, { 'Content-Type': 'text/html', 'azds-route-as': azdsroute });
+                    console.log("Route: azdsroute " + azdsroute)
+                }
+                else
+                {
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    console.log("no azds")
+                }
+                
 
                 res.write(htmlhead + htmlusericon + html + wrapdata(data) + htmlend);
             }
@@ -123,6 +148,7 @@ function createHTMLInfo(currentposition, url, clientIP, htmlrequesticon) {
         'IP: ' + getHostIps() + '</br>' +
         'Getting data from: ' + url + '</br>' +
         'Caller IP: ' + clientIP + '</br>' +
+        'Build: 20200128-1714</br>' +
         '</p>';
     var htmlcontentend = '</p>';
     var html = htmlrequesticon + htmlcontent + canvas + info + htmlcontentend;
@@ -156,6 +182,7 @@ app.get('/', function (req, res) {
         "ClientIP=" + tabs + clientIP + "</br>" +
         "ServerIP=" + tabs + addresses + "</br>" +
         "myvar=" + tabs + config.myvar + "</br>" +
+        "bla=" + tabs + config.myvar + "</br>" +
         ""
     );
 });

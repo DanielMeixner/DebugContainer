@@ -5,4 +5,8 @@ config.serviceendpointhost = process.env.SERVICEENDPOINTHOST;
 config.serviceendpointpath = process.env.SERVICEENDPOINTPATH;
 config.serviceendpointport = process.env.SERVICEENDPOINTPORT;
 config.myvar = process.env.MYVAR;
+
+
+console.log(process.env);
+
 module.exports = config;
