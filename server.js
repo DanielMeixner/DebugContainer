@@ -6,6 +6,8 @@ const request = require('request');
 const rp = require('request-promise');
 
 
+
+
 var htmlrequesticon = '<i class="fas fa-arrow-down"></i></br>';
 var htmlusericon = '<i class="fas fa-user"></i></br>';
 
@@ -30,6 +32,12 @@ app.get('/ping', function (req, res) {
     console.log('received ping');
     res.send('Pong, Pong');
 });
+
+
+app.get('/static', (req, res) => {
+    res.sendFile('static/static.html', { root: "." });
+});
+
 
 app.get('/api/whoareu', function (req, res) {
     var clientIP = getClientAddress(req);
@@ -148,7 +156,7 @@ function createHTMLInfo(currentposition, url, clientIP, htmlrequesticon) {
         'IP: ' + getHostIps() + '</br>' +
         'Getting data from: ' + url + '</br>' +
         'Caller IP: ' + clientIP + '</br>' +
-        'Build: 20200128-1714</br>' +
+        'Build: 20200204-1552</br>' +
         '</p>';
     var htmlcontentend = '</p>';
     var html = htmlrequesticon + htmlcontent + canvas + info + htmlcontentend;

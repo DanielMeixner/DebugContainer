@@ -18,6 +18,17 @@ service:
   type: ClusterIP
   port: 80
 
+servicename: svcb
+envs:
+  KAAAA: vaaa,
+  MYKEY: myval
+  COLOR: pink
+  SERVICEENDPOINTHOST: svcc
+  SERVICEENDPOINTPATH: /api/cascade
+  SERVICEENDPOINTPORT: "'80'"
+  MYPORT: "'80'"
+  MYSERVICENAME: svc
+
 probes:
   enabled: false
 

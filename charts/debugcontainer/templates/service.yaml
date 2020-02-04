@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
+  # name: mysvcname
+  # name: {{ .Values.servicename }}
   name: {{ template "debugcontainer.fullname" . }}
   labels:
     app: {{ template "debugcontainer.name" . }}

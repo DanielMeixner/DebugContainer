@@ -23,7 +23,8 @@ install:
       repository: debugcontainer
       tag: $(tag)
       pullPolicy: Never
-    ingress:
+    ingress:      
+      # enabled: true
       annotations:
         kubernetes.io/ingress.class: traefik-azds
       hosts:
@@ -35,3 +36,8 @@ configurations:
   develop:
     build:
       useGitIgnore: true
+    container:
+      sync:
+      - "!**/package.json"
+      iterate:
+        processesToKill: [node]

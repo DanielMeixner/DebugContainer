@@ -42,6 +42,12 @@ spec:
               port: http
           {{- end }}
           env:
+             # get env vars from values.yaml file; section "envs"
+            {{- $root := . }}
+             {{- range $key, $val := .Values.envs }}                  
+            - name: {{ $key }}
+              value: {{ $val }}                            
+            {{- end }}
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
             {{- range $key, $value := $values }}
