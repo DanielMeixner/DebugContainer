@@ -7,7 +7,7 @@ RUN npm install
 COPY ./*.js /usr/src/app/
 
 RUN mkdir -p /usr/src/app/public
-COPY ./dummy.txt /usr/src/app/public/
+COPY ./static.html /usr/src/app/public/
 
 
 
