@@ -13,6 +13,11 @@ getClientAddress = function (req) {
     return req.connection.remoteAddress;
 };
 
+
+app.get('/static', (req, res) => {
+    res.sendFile('static/static.html', { root: "." });
+})
+
 getHostIps = function () {
     var os = require('os');
     var nwinterface = os.networkInterfaces();
