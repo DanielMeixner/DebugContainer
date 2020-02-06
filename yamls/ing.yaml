@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik-azds
+  name: svca
+  namespace: default  
+spec:
+  rules:
+  - host: default.svca.<REPLACE>
+    http:
+      paths:
+      - backend:
+          serviceName: svca
+          servicePort: http
+        path: /

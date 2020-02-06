@@ -6,8 +6,6 @@ const request = require('request');
 const rp = require('request-promise');
 
 
-
-
 var htmlrequesticon = '<i class="fas fa-arrow-down"></i></br>';
 var htmlusericon = '<i class="fas fa-user"></i></br>';
 
@@ -32,12 +30,6 @@ app.get('/ping', function (req, res) {
     console.log('received ping');
     res.send('Pong, Pong');
 });
-
-
-app.get('/static', (req, res) => {
-    res.sendFile('static/static.html', { root: "." });
-});
-
 
 app.get('/api/whoareu', function (req, res) {
     var clientIP = getClientAddress(req);
@@ -78,10 +70,17 @@ app.get('/api/cascade', function (req, res) {
 
     console.log("start cascading... " + url);
 
-      
+    console.log(req.headers);
 
     // call next service
-    rp.get(url)
+    var o= {
+    headers: {
+        /* propagate the dev space routing header */
+        'azds-route-as': req.headers['azds-route-as']
+     }
+    }
+
+    rp.get(url,o)
         .then(function (data) {
             console.log("Data received from ... " +url);          
             
@@ -94,18 +93,7 @@ app.get('/api/cascade', function (req, res) {
 
             if (currentposition > 0) {
                 // contenttype will be defined by wrapping call
-
-                
-                if (azdsroute!=undefined)
-                {
-                    res.writeHead(200, { 'Content-Type': 'text/plain', 'azds-route-as': azdsroute });
-                    console.log("Route: azdsroute " + azdsroute)
-                }
-                else
-                {
-                    res.writeHead(200, { 'Content-Type': 'text/plain' });
-                    console.log("no azds")
-                }
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
                 // second part of answer is the answer we got from the subsequent call - wrapped in a way that it doesn't break our html
                 res.write(html + wrapdata(data));
             }
@@ -128,18 +116,7 @@ app.get('/api/cascade', function (req, res) {
                     "<h1>Cascading API calls</h1>";                
                 var htmlend = "</body></html>";
               
-                if (azdsroute!=undefined)
-                {
-                    res.writeHead(200, { 'Content-Type': 'text/html', 'azds-route-as': azdsroute });
-                    console.log("Route: azdsroute " + azdsroute)
-                }
-                else
-                {
-                    res.writeHead(200, { 'Content-Type': 'text/html' });
-                    console.log("no azds")
-                }
-                
-
+                res.writeHead(200, { 'Content-Type': 'text/html' });
                 res.write(htmlhead + htmlusericon + html + wrapdata(data) + htmlend);
             }
             res.send();            
@@ -156,7 +133,7 @@ function createHTMLInfo(currentposition, url, clientIP, htmlrequesticon) {
         'IP: ' + getHostIps() + '</br>' +
         'Getting data from: ' + url + '</br>' +
         'Caller IP: ' + clientIP + '</br>' +
-        'Build: 20200204-1552</br>' +
+        
         '</p>';
     var htmlcontentend = '</p>';
     var html = htmlrequesticon + htmlcontent + canvas + info + htmlcontentend;

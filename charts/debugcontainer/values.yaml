@@ -1,7 +1,7 @@
 # Default values for debugcontainer.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-fullnameOverride: debugcontainer
+fullnameOverride: svcb
 replicaCount: 1
 image:
   repository: debugcontainer
