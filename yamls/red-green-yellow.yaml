@@ -1,0 +1,155 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svca
+  labels:
+    name: svca    
+spec:
+  selector:
+    name: appa
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+     targetPort: 80
+     protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svcb
+  labels:
+    name: svcb
+spec:
+  selector:
+    name: appb
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+     targetPort: 80
+     protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svcc
+  labels:
+    name: svcc    
+spec:
+  selector:
+    name: appc
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+     targetPort: 80
+     protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: appa
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        name: appa
+        app: dbg
+    spec:
+      containers:
+      - name: appa
+        image: danielmeixner/debugcontainer:latest
+        ports:
+          - containerPort: 80
+            name: http         
+            protocol: TCP
+        env: 
+          - name: "SERVICEENDPOINTHOST"
+            value: "svcb"
+          - name: "SERVICEENDPOINTPATH"
+            value: "/api/cascade"              
+          - name: "COLOR"
+            value: "red"
+          - name: "SERVICEENDPOINTPORT"
+            value: "80"
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: appb
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        name: appb
+        app: dbg
+    spec:
+      containers:
+      - name: appb
+        image: danielmeixner/debugcontainer:latest
+        ports:
+          - containerPort: 80
+            name: http         
+            protocol: TCP
+        env: 
+          - name: "SERVICEENDPOINTHOST"
+            value: "svcc"
+          - name: "SERVICEENDPOINTPATH"
+            value: "/api/whoareu"              
+          - name: "COLOR"
+            value: "green"
+          - name: "SERVICEENDPOINTPORT"
+            value: "80"
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: appc
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        name: appc
+        app: dbg
+    spec:
+      containers:
+      - name: appc
+        image: danielmeixner/debugcontainer:latest
+        ports:
+          - containerPort: 80
+            name: http         
+            protocol: TCP
+        env: 
+          - name: "SERVICEENDPOINTHOST"
+            value: "svcc"
+          - name: "SERVICEENDPOINTPATH"
+            value: "/api/whoareu"              
+          - name: "COLOR"
+            value: "yellow"
+          - name: "SERVICEENDPOINTPORT"
+            value: "80"
