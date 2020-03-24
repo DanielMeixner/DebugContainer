@@ -63,7 +63,9 @@ jobs:
         echo ::set-output name=result::$release
     
     - name: Helm tool installer
-      id: install-helm-client      
+      id: install-helm-client     
+      with:
+        version: v2.9.1
       uses: Azure/setup-helm@v1  
     
     - name: Helm Upgrade PR
