@@ -1,11 +1,10 @@
-name: PRFlow Bikes
+name: PRFlow Dev Spaces
 
 on: 
   pull_request:
     branches:
-    - dev
-    paths:
-    - samples/BikeSharingApp/Bikes/**
+    - feature1
+    
 
 jobs:
   build:
