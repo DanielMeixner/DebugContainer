@@ -70,8 +70,8 @@ jobs:
     
     - name: Helm Upgrade PR
       run:  
-        ${{steps.install-helm-client.outputs.helm-path}} --debug  upgrade --install ${{steps.generate-release-name.outputs.result}} ./charts/  \
-        --namespace ${{steps.generate-child-space-name.outputs.result}} \
+        ${{steps.install-helm-client.outputs.helm-path}} --debug  upgrade ${{steps.generate-release-name.outputs.result}} ./charts/  \
+        --install --namespace ${{steps.generate-child-space-name.outputs.result}} \
         --set image.repository=${{ secrets.CONTAINER_REGISTRY }}/debugcontainer \
         --set image.tag=$GITHUB_SHA \
         --set imagePullSecrets[0].name=${{ secrets.IMAGE_PULL_SECRET }} \
