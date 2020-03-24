@@ -19,8 +19,8 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     - run: |
-        docker build samples/BikeSharingApp/Bikes/ -t ${{ secrets.CONTAINER_REGISTRY }}/bikes:$GITHUB_SHA
-        docker push ${{ secrets.CONTAINER_REGISTRY }}/bikes:$GITHUB_SHA
+        docker build . -t ${{ secrets.CONTAINER_REGISTRY }}/bikes:$GITHUB_SHA
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/debugcontainer:pr-$GITHUB_SHA
       
     - uses: azure/aks-set-context@v1
       with:
@@ -55,7 +55,7 @@ jobs:
     - name: Create valid release-name
       id: generate-release-name
       run: |
-        release=bikesharing-$GITHUB_HEAD_REF
+        release=debugcontainer-$GITHUB_HEAD_REF
         release=${release::53}
         release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
         echo ::set-output name=result::$release
@@ -81,14 +81,14 @@ jobs:
           echo ::set-output name=helm::$tmp_dir/helm
         fi
 
-    - name: Helm Upgrade PR
-      run: |        
-        ${{steps.install-helm-client.outputs.helm}} upgrade \
-          --install  ${{steps.generate-release-name.outputs.result}} samples/BikeSharingApp/Bikes/charts/bikes \
-          --namespace ${{steps.generate-child-space-name.outputs.result}} \
-          --set image.repository=${{ secrets.CONTAINER_REGISTRY }}/bikes \
-          --set image.tag=$GITHUB_SHA \
-          --set imagePullSecrets[0].name=${{ secrets.IMAGE_PULL_SECRET }}
+   # - name: Helm Upgrade PR
+   #   run: |        
+   #     ${{steps.install-helm-client.outputs.helm}} upgrade \
+   #       --install  ${{steps.generate-release-name.outputs.result}} samples/BikeSharingApp/Bikes/charts/bikes \
+   #       --namespace ${{steps.generate-child-space-name.outputs.result}} \
+   #       --set image.repository=${{ secrets.CONTAINER_REGISTRY }}/bikes \
+   #       --set image.tag=$GITHUB_SHA \
+   #       --set imagePullSecrets[0].name=${{ secrets.IMAGE_PULL_SECRET }}
  
     - uses: azure/dev-spaces/actions/add-review-url@Releases/v2
       with:
