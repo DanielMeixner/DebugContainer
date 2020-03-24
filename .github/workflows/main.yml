@@ -19,7 +19,8 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     - run: |
-        docker build . -t ${{ secrets.CONTAINER_REGISTRY }}/debugcontainer:$GITHUB_SHA
+        docker build . -t ${{ secrets.CONTAINER_REGISTRY }}/debugcontainer:pr-$GITHUB_SHA
+    - run: |
         docker push ${{ secrets.CONTAINER_REGISTRY }}/debugcontainer:pr-$GITHUB_SHA
       
     - uses: azure/aks-set-context@v1
