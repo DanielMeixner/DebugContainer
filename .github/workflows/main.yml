@@ -61,26 +61,29 @@ jobs:
         release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
         echo ::set-output name=result::$release
 
-    - name: Install Helm for client
-      id: install-helm-client
-      run: |
-        set -e        
-        clientversion=$(helm version --client --short | cut -d' ' -f2 | cut -d'+' -f1)
-        serverversion=$(helm version --server --short | cut -d' ' -f2 | cut -d'+' -f1)
-        if [ ! -n "$serverversion" ]; then
-          echo "Please install Helm on the server!" 1>&2
-          exit 1
-        elif [ "$clientversion" == "$serverversion" ]; then   
-          echo The client and server Helm Versions are equal
-          echo ::set-output name=helm::helm
-        else
-          tmp_dir=$(mktemp -d)      
-          export DESIRED_VERSION=$serverversion HELM_INSTALL_DIR=$tmp_dir          
-          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
-          chmod 700 get_helm.sh
-          ./get_helm.sh
-          echo ::set-output name=helm::$tmp_dir/helm
-        fi
+    - name: Helm tool installer
+      uses: Azure/setup-helm@v1
+      
+   #- name: Install Helm for client
+   #   id: install-helm-client
+   #   run: |
+   #     set -e        
+   #     clientversion=$(helm version --client --short | cut -d' ' -f2 | cut -d'+' -f1)
+   #     serverversion=$(helm version --server --short | cut -d' ' -f2 | cut -d'+' -f1)
+   #     if [ ! -n "$serverversion" ]; then
+   #       echo "Please install Helm on the server!" 1>&2
+   #       exit 1
+   #     elif [ "$clientversion" == "$serverversion" ]; then   
+   #       echo The client and server Helm Versions are equal
+   #       echo ::set-output name=helm::helm
+   #     else
+   #       tmp_dir=$(mktemp -d)      
+   #       export DESIRED_VERSION=$serverversion HELM_INSTALL_DIR=$tmp_dir          
+   #       curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+   #       chmod 700 get_helm.sh
+   #       ./get_helm.sh
+   #       echo ::set-output name=helm::$tmp_dir/helm
+   #     fi
 
    # - name: Helm Upgrade PR
    #   run: |        
