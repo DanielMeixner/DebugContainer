@@ -69,7 +69,7 @@ jobs:
     - name: Helm Upgrade PR
       run:  
         ${{steps.install-helm-client.outputs.helm-path}} upgrade \          
-          --install ${{steps.generate-child-space-name.outputs.name}} /charts/ \
+          --install ${{steps.generate-release-name.outputs.result}} ./charts/ \
           --namespace ${{steps.generate-child-space-name.outputs.result}} \
           --set image.repository=${{ secrets.CONTAINER_REGISTRY }}/bikes \
           --set image.tag=$GITHUB_SHA \
