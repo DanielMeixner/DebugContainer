@@ -64,6 +64,8 @@ jobs:
     
     - name: Helm tool installer
       id: install-helm-client
+      with:
+        version: 2.9.1
       uses: Azure/setup-helm@v1  
     
     - name: Helm Upgrade PR
