@@ -63,12 +63,13 @@ jobs:
         echo ::set-output name=result::$release
     
     - name: Helm tool installer
+      id: install-helm-client
       uses: Azure/setup-helm@v1  
     
     - name: Helm Upgrade PR
       run:  
-        helm upgrade \
-          --install  ${{steps.generate-release-name.outputs.result}} charts/ \
+        ${{steps.install-helm-client.outputs.helm-path}} upgrade \
+          --install  ${{steps.generate-release-name.outputs.result}} /charts/ \
           --namespace ${{steps.generate-child-space-name.outputs.result}} \
           --set image.repository=${{ secrets.CONTAINER_REGISTRY }}/bikes \
           --set image.tag=$GITHUB_SHA \
