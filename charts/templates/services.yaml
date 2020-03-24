@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svca
+  labels:
+    name: svca    
+spec:
+  selector:
+    name: appa
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+     targetPort: 80
+     protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svcb
+  labels:
+    name: svcb
+spec:
+  selector:
+    name: appb
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+     targetPort: 80
+     protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svcc
+  labels:
+    name: svcc    
+spec:
+  selector:
+    name: appc
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+     targetPort: 80
+     protocol: TCP
