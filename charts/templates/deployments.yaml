@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: appa
-        image: {{ .Values.image.repository }}/debugcontainer:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
           - containerPort: 80
             name: http         
