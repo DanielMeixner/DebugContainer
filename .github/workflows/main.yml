@@ -3,7 +3,7 @@ name: PRFlow Dev Spaces
 on: 
   pull_request:
     branches:
-    - validation
+    - dev
     
 
 jobs:
