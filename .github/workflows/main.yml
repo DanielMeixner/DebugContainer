@@ -70,7 +70,7 @@ jobs:
     
     - name: Helm Upgrade PR
       run:  
-        ${{steps.install-helm-client.outputs.helm-path}} --debug upgrade ${{steps.generate-release-name.outputs.result}} charts  
+        ${{steps.install-helm-client.outputs.helm-path}} --debug upgrade ${{steps.generate-release-name.outputs.result}} charts  --install
  
     - uses: azure/dev-spaces/actions/add-review-url@Releases/v2
       with:
