@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: appa
-        image: danielmeixner/debugcontainer:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}/debugcontainer:{{ .Values.image.tag }}
         ports:
           - containerPort: 80
             name: http         
@@ -66,7 +66,7 @@ spec:
     spec:
       containers:
       - name: appb
-        image: danielmeixner/debugcontainer:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
           - containerPort: 80
             name: http         
@@ -108,7 +108,7 @@ spec:
     spec:
       containers:
       - name: appc
-        image: danielmeixner/debugcontainer:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
           - containerPort: 80
             name: http         
