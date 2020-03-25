@@ -77,7 +77,7 @@ spec:
           - name: "SERVICEENDPOINTPATH"
             value: "/api/whoareu"              
           - name: "COLOR"
-            value: "purple"
+            value: "green"
           - name: "SERVICEENDPOINTPORT"
             value: "80"
 
