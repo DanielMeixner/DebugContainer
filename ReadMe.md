@@ -76,3 +76,5 @@ docker run -it -p 8083:80  -e SERVICEENDPOINTHOST=172.17.0.1 -e SERVICEENDPOINTP
 ```
 
 This will start two containers where the first one points to the second one. If you call the first container in a browser it will show a link to the api of the second.
+
+.
