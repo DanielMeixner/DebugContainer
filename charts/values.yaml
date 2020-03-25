@@ -3,4 +3,5 @@
 
 image:
   tag: latest
+  repository: dmxacrmaster-microsoft.azurecr.io
 
