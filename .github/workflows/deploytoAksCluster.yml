@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: dmxacrmaster.azurecr.io
+        username: ${{ secrets.acr_dmxacrmaster_username }}
+        password: ${{ secrets.acr_dmxacrmaster_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t dmxacrmaster.azurecr.io/dmxaksds:${{ github.sha }}
+        docker push dmxacrmaster.azurecr.io/dmxaksds:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_dmxaksds_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep dmxaksdsaa06 | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace dmxaksdsaa06`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: dmxaksdsaa06
+        container-registry-url: dmxacrmaster.azurecr.io
+        container-registry-username: ${{ secrets.acr_dmxacrmaster_username }}
+        container-registry-password: ${{ secrets.acr_dmxacrmaster_password }}
+        secret-name: dmxaksdsdockerauth
+       
+    - uses: azure/k8s-deploy@v1
+      with:
+        namespace: dmxaksdsaa06
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+        images: |
+          dmxacrmaster.azurecr.io/dmxaksds:${{ github.sha }}
+        imagepullsecrets: |
+          dmxaksdsdockerauth
