@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "dmxaksds"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "dmxaksds"
+    spec:
+      containers:
+        - name: "dmxaksds"
+          image: "dmxacrmaster.azurecr.io/dmxaksds"
+          ports:
+          - containerPort: 80
