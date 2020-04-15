@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appa
+  labels: 
+    name: appa
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  spec:
+  selector:
+    matchLabels:
+      name: appa
+  template:
+    metadata:
+      labels:
+        name: appa
+        app: dbg
+    spec:
+      containers:
+      - name: appa
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+          - containerPort: 80
+            name: http         
+            protocol: TCP
+        env: 
+          - name: "SERVICEENDPOINTHOST"
+            value: "svcb"
+          - name: "SERVICEENDPOINTPATH"
+            value: "/api/cascade"              
+          - name: "COLOR"
+            value: "red"
+          - name: "SERVICEENDPOINTPORT"
+            value: "80"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appb
+  labels: 
+    name: appb
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  spec:
+  selector:
+    matchLabels:
+      name: appb
+  template:
+    metadata:
+      labels:
+        name: appb
+        app: dbg
+    spec:
+      containers:
+      - name: appb
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+          - containerPort: 80
+            name: http         
+            protocol: TCP
+        env: 
+          - name: "SERVICEENDPOINTHOST"
+            value: "svcc"
+          - name: "SERVICEENDPOINTPATH"
+            value: "/api/whoareu"              
+          - name: "COLOR"
+            value: "green"
+          - name: "SERVICEENDPOINTPORT"
+            value: "80"
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appc
+  labels: 
+    name: appc
+spec:
+  selector:
+    matchLabels:
+      name: appc  
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        name: appc
+        app: dbg
+    spec:
+      containers:
+      - name: appc
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+          - containerPort: 80
+            name: http         
+            protocol: TCP
+        env: 
+          - name: "SERVICEENDPOINTHOST"
+            value: "svcc"
+          - name: "SERVICEENDPOINTPATH"
+            value: "/api/whoareu"              
+          - name: "COLOR"
+            value: "yellow"
+          - name: "SERVICEENDPOINTPORT"
+            value: "80"
