@@ -84,7 +84,7 @@ app.get('/api/cascade', function (req, res) {
         'azds-route-as': req.headers['azds-route-as']
      }
     }
-
+    console.log("route-as:"+ req.headers['azds-route-as']);
     rp.get(url,o)
         .then(function (data) {
             console.log("Data received from ... " +url);          
