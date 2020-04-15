@@ -5,7 +5,7 @@ const config = require('./config')
 const request = require('request');
 const rp = require('request-promise');
 
-
+config.color="pink";
 var htmlrequesticon = '<i class="fas fa-arrow-down"></i></br>';
 var htmlusericon = '<i class="fas fa-user"></i></br>';
 
