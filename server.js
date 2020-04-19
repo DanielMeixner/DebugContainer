@@ -111,7 +111,7 @@ app.get('/api/cascade', function (req, res) {
                     "<head>" +
                     "<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\" integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\">" +
                     "<style>" +
-                    "canvas {float: left;width:100px;height:100px; }" +
+                    "canvas {float: left;width:100px;height:100px;border-radius:50%; }" +
                     'i {font-size:100px;}' +
                     "p.clear {clear: both; margin-left: 5px;}" +
                     'p.info {margin-left: 120px;}' +
