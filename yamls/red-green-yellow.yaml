@@ -50,6 +50,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: appa
+  labels:
+    app: appa
 spec:
   replicas: 1
   selector:
@@ -64,8 +66,8 @@ spec:
   template:
     metadata:
       labels:
-        name: appa
-        app: dbg
+        app: appa
+        
     spec:
       containers:
       - name: appa
@@ -89,6 +91,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: appb
+  labels:
+    app: appb
 spec:
   replicas: 1
   selector:
@@ -103,8 +107,8 @@ spec:
   template:
     metadata:
       labels:
-        name: appb
-        app: dbg
+        app: appb
+        
     spec:
       containers:
       - name: appb
@@ -128,7 +132,9 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: appc
+  name: appc  
+  labels:
+    app: appc
 spec:
   replicas: 1
   selector:
@@ -143,8 +149,8 @@ spec:
   template:
     metadata:
       labels:
-        name: appc
-        app: dbg
+        app: appc
+
     spec:
       containers:
       - name: appc
