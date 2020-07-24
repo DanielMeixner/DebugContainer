@@ -52,6 +52,9 @@ metadata:
   name: appa
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: appa
   minReadySeconds: 5
   strategy:
     type: RollingUpdate
@@ -88,6 +91,9 @@ metadata:
   name: appb
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: appb
   minReadySeconds: 5
   strategy:
     type: RollingUpdate
@@ -125,6 +131,9 @@ metadata:
   name: appc
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: appc
   minReadySeconds: 5
   strategy:
     type: RollingUpdate
