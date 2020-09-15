@@ -29,7 +29,7 @@ getHostIps = function () {
     });
     return ips.toString();
 }
-
+ 
 // Routes
 app.get('/ping', function (req, res) {
     console.log('received ping');
@@ -81,11 +81,11 @@ app.get('/api/cascade', function (req, res) {
     var o= {
     headers: {
         /* propagate the dev space routing header */
-        'azds-route-as': req.headers['azds-route-as']
+        'kubernetes-route-as': req.headers['kubernetes-route-as']
      }
     }
 
-    console.log("route-as: "+ req.headers['azds-route-as']);
+    console.log("route-as: "+ req.headers['kubernetes-route-as']);
     rp.get(url,o)
         .then(function (data) {
             console.log("Data received from ... " +url);          
@@ -95,7 +95,7 @@ app.get('/api/cascade', function (req, res) {
             var html = createHTMLInfo(currentposition, url, clientIP, htmlrequesticon);
 
             // pass on header for azds
-            var azdsroute=req.headers['azds-route-as']; 
+            var azdsroute=req.headers['kubernetes-route-as']; 
 
             if (currentposition > 0) {
                 // contenttype will be defined by wrapping call
@@ -133,7 +133,7 @@ app.get('/api/cascade', function (req, res) {
 // helper to provide fancy ui
 function createHTMLInfo(currentposition, url, clientIP, htmlrequesticon) {
     var htmlcontent = "<p class=clear >";
-    var canvas = '<canvas style="background-color:' + config.color + ';"></canvas>';
+    var canvas = '<canvas style="border:1px;background-color:' + config.color + ';"></canvas>';
     var info = '<p class=info>' +
         'Color : ' + config.color + '</br>' +
         'Position : ' + currentposition + '</br>' +

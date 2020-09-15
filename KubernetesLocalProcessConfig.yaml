@@ -1,0 +1,9 @@
+version: 0.1
+volumeMounts:
+  - name: MY_VOLUME
+    localPath: /
+env:
+  - name: MY_VOLUME
+    value: $(volumeMounts:config)/config
+  - name: COLOR
+    value: black
