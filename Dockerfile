@@ -9,6 +9,8 @@ COPY ./*.js /usr/src/app/
 RUN mkdir -p /usr/src/app/static
 COPY ./static/* /usr/src/app/static/
 
+RUN mkdir -p /usr/src/app/public
+COPY ./public/* /usr/src/app/public/
 
 
 EXPOSE 80
