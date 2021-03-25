@@ -93,6 +93,7 @@ function addAI()
     var block = "<script type=\"text/javascript\" src=\"/public/get.js\"></script>"
     if( config.disableAppInsights!=1)
     {
+      block+="<script type=\"text/javascript\" \">var aikey='"+process.env.APPINSIGHTS_INSTRUMENTATIONKEY+"'</script>";
       return block + "<script type=\"text/javascript\" src=\"/public/appinsights.js\"></script>";
     }
     else
@@ -176,6 +177,7 @@ app.get('/api/cascade', function (req, res) {
                 var htmlhead = "" +
                     "<html>" +
                     "<head>" +
+                    
                     addAI() +
                     addAIEvent("'cascade'" )+
 

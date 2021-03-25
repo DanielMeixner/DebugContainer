@@ -25,7 +25,7 @@ spec:
       - name: appa
         # this image contains setup for application insights. Set the APPINSIGHTS_INSTRUMENTATIONKEY correctly.
         # also make sure you use the image from your private registry
-        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:ai
+        image: danielmeixner/debugcontainer:ai
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -41,7 +41,7 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "YOUR_APP_INSIGHTS_KEY"      
+            value: "YOUR-APP-INSIGHTS-KEY"      
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -68,7 +68,7 @@ spec:
       containers:
       - name: appb
          # this image contains setup for application insights. Set the APPINSIGHTS_INSTRUMENTATIONKEY correctly.
-        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:ai
+        image: danielmeixner/debugcontainer:ai
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -84,7 +84,7 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "YOUR_APP_INSIGHTS_KEY"
+            value: "YOUR-APP-INSIGHTS-KEY"
         volumeMounts:
               - name: config
                 mountPath: "/config"
@@ -125,7 +125,7 @@ spec:
       containers:
       - name: appc
          # this image contains setup for application insights. Set the APPINSIGHTS_INSTRUMENTATIONKEY correctly.
-        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:ai
+        image: danielmeixner/debugcontainer:ai
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -141,6 +141,6 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "YOUR_APP_INSIGHTS_KEY"
+            value: "YOUR-APP-INSIGHTS-KEY"
 
             
