@@ -51,10 +51,17 @@ When you start the container it will offer you 3 endpoints:
 
 ## Run it on Kubernetes
 
+
 You can run the yamls/3svc.yaml to get an easy setup in Kubernetes with 3 services where A is calling B and B is calling C.
+
+### Important: Configure App Insights first!
+Make sure you set the environment variables for Application Insights Key for all pods!
+To disable App Insights set a environment variable DISABLEAPPINSIGHTS to 1.
+
+
 Just run 
 ```
-kubectl apply -f https://raw.githubusercontent.com/DanielMeixner/DebugContainer/master/yamls/3svc.yaml
+kubectl apply -f https://raw.githubusercontent.com/DanielMeixner/DebugContainer/master/yamls
 ```
 
 Then run
