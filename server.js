@@ -8,6 +8,45 @@ const request = require('request');
 const rp = require('request-promise');
 var cors = require('cors')
 
+const opentelemetry = require('@opentelemetry/api');
+const { BasicTracerProvider, ConsoleSpanExporter, SimpleSpanProcessor } = require('@opentelemetry/tracing');
+const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector');
+
+const exporter = new CollectorTraceExporter({
+  serviceName: 'basic-service',
+  // headers: {
+  //   foo: 'bar'
+  // },
+});
+
+
+
+
+
+
+const { NodeTracerProvider } = require('@opentelemetry/node');
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+
+const provider = new NodeTracerProvider();
+provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+provider.register();
+
+registerInstrumentations({
+  instrumentations: [
+    {
+      plugins: {
+        express: {
+          enabled: true,
+          // You may use a package name or absolute path to the file.
+          path: '@opentelemetry/plugin-express',
+        }
+      }
+    },
+  ],
+  tracerProvider: provider,
+});
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -31,17 +70,6 @@ var pubdirpath=require('path').join(__dirname, 'public');
 console.log("... serving " + pubdirpath);
 var pubdir = express.static(pubdirpath);
 
-// var corsOptions = {
-//   origin: '*',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
-// }
-// app.use(cors(corsOptions));
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 
 app.use('/public', pubdir);
@@ -126,40 +154,11 @@ function addAIEvent(msg)
 
   }
 
-  // constructor() {
-
-  //   this.appInsights = new ApplicationInsights({
-
-  //     config: {
-
-  //       instrumentationKey: environment.appInsights.instrumentationKey,
-
-  //       enableCorsCorrelation: true,
-
-  //       enableAutoRouteTracking: true,
-
-  //       distributedTracingMode: DistributedTracingModes.AI_AND_W3C
-
-  //     }
-
-  //   });
-
-  //   this.appInsights.loadAppInsights();
-
-  //   this.loadCustomTelemetryProperties();
-
-  //   this.appInsights.trackPageView();
-
-  // }
-
+  
   loadCustomTelemetryProperties();
   window.appInsights.trackEvent('Something was called ', 'daniels event ended');
 
-  // httpGet("http://51.104.163.255/api/cascade");
-
-  //   var telemetryInitializer = (envelope) => {
-  //   envelope.data.someField = 'This item passed through my telemetry initializer';
-  // };
+  
   
   window.appInsights.trackTrace({message: 'This message will use a telemetry initializer'});
   // appInsights.addTelemetryInitializer(() => false); // Nothing is sent after this is executed;

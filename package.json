@@ -10,14 +10,15 @@
     "name": "Daniel Meixner"
   },
   "dependencies": {
+    "@opentelemetry/api": "^0.18.0",
     "@opentelemetry/core": "^0.18.0",
-    "@opentelemetry/exporter-zipkin": "^0.18.0",
+    "@opentelemetry/exporter-collector": "^0.18.0",
+    "@opentelemetry/exporter-collector-grpc": "^0.18.0",
+    "@opentelemetry/exporter-collector-proto": "^0.18.0",
     "@opentelemetry/instrumentation": "^0.18.0",
     "@opentelemetry/metrics": "^0.18.0",
     "@opentelemetry/node": "^0.18.0",
     "@opentelemetry/plugin-express": "^0.14.0",
-    "@opentelemetry/plugin-http": "^0.18.0",
-    "@opentelemetry/plugin-https": "^0.18.0",
     "@opentelemetry/tracing": "^0.18.0",
     "applicationinsights": "^1.8.10",
     "cors": "^2.8.5",
@@ -25,6 +26,7 @@
     "express": "^4.15.4",
     "os": "0.1.1",
     "path": "^0.12.7",
+    "perf_hooks": "0.0.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.5"
   }

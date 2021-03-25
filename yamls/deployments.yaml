@@ -39,9 +39,9 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "917bb16b-a918-4192-9949-d9151240aeb7"
+            value: "YOUR-APP-INSIGHTS-KEY"
       - name: agent
-        image: otel/opentelemetry-collector:0.18.0
+        image: otel/opentelemetry-collector-contrib-dev:latest
         args:
         - --config=/conf/agent.yaml
         volumeMounts:
@@ -95,7 +95,7 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "917bb16b-a918-4192-9949-d9151240aeb7"
+            value: "YOUR-APP-INSIGHTS-KEY"
         volumeMounts:
               - name: config
                 mountPath: "/config"
@@ -151,6 +151,6 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "917bb16b-a918-4192-9949-d9151240aeb7"
+            value: "YOUR-APP-INSIGHTS-KEY"
 
             
