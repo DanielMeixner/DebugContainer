@@ -1,51 +1,17 @@
 require('dotenv').config();
-let appInsights = require('applicationinsights');
-const http = require('http');
+const config = require('./config')
+let appInsights = null;
+if( config.disableAppInsights!=1)
+{ 
+  appInsights = require('applicationinsights');
+}
+
 const express = require('express');
 const app = express();
-const config = require('./config')
-const request = require('request');
 const rp = require('request-promise');
-var cors = require('cors')
-
-const opentelemetry = require('@opentelemetry/api');
-const { BasicTracerProvider, ConsoleSpanExporter, SimpleSpanProcessor } = require('@opentelemetry/tracing');
-const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector');
-
-const exporter = new CollectorTraceExporter({
-  serviceName: 'basic-service',
-  // headers: {
-  //   foo: 'bar'
-  // },
-});
 
 
 
-
-
-
-const { NodeTracerProvider } = require('@opentelemetry/node');
-const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-
-const provider = new NodeTracerProvider();
-provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
-provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
-provider.register();
-
-registerInstrumentations({
-  instrumentations: [
-    {
-      plugins: {
-        express: {
-          enabled: true,
-          // You may use a package name or absolute path to the file.
-          path: '@opentelemetry/plugin-express',
-        }
-      }
-    },
-  ],
-  tracerProvider: provider,
-});
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
@@ -54,9 +20,12 @@ app.use(function(req, res, next) {
   next();
 });
 
-appInsights.setup().setSendLiveMetrics(true);
-appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = process.env.HOSTNAME;
-appInsights.start();
+if( config.disableAppInsights!=1)
+{
+  appInsights.setup().setSendLiveMetrics(true);
+  appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = process.env.HOSTNAME;
+  appInsights.start();
+}
 
 var htmlrequesticon = '<i class="fas fa-arrow-down"></i></br>';
 var htmlusericon = '<i class="fas fa-user"></i></br>';
@@ -97,6 +66,10 @@ app.get('/ping', function (req, res) {
 });
 
 app.get('/api/whoareu', function (req, res) {
+  console.log (Date.UTC);
+    console.log("Headerinfo:");
+    console.log(req.headers);
+
     var clientIP = getClientAddress(req);
     var addresses = getHostIps();
     if(req.query.sub==undefined)
@@ -118,7 +91,14 @@ app.get('/api/whoareu', function (req, res) {
 function addAI()
 {
     var block = "<script type=\"text/javascript\" src=\"/public/get.js\"></script>"
-    return block + "<script type=\"text/javascript\" src=\"/public/appinsights.js\"></script>";
+    if( config.disableAppInsights!=1)
+    {
+      return block + "<script type=\"text/javascript\" src=\"/public/appinsights.js\"></script>";
+    }
+    else
+    {
+      return block;
+    }
 }
 
 
@@ -130,47 +110,19 @@ function addButton()
 
 function addAIEvent(msg)
 {
-  // var ret= "<script type=\"text/javascript\"> window.appInsights.trackEvent('Something was called ', "+msg+"); </script>";
-  var ret ="";
-  ret+= `  
-  "<script type=\"text/javascript\">
-  alert('jo - start tracking');
-
-  window.appInsights.trackEvent('Something was called ', 'daniels event');
-
-  
-
-  private loadCustomTelemetryProperties() {
-
-    window.appInsights.addTelemetryInitializer(envelope => {
-      let AppName = "DanielWebClient";
-      envelope.tags["ai.cloud.role"] = AppName;
-      envelope.tags["ai.cloud.roleInstance"] = "ac-01";
-      let item = envelope.baseData;
-      item.properties = item.properties || {};
-      item.properties["ApplicationPlatform"] = "Web";
-      item.properties["ApplicationName"] = AppName;
-    });
-
-  }
-
-  
-  loadCustomTelemetryProperties();
-  window.appInsights.trackEvent('Something was called ', 'daniels event ended');
-
-  
-  
-  window.appInsights.trackTrace({message: 'This message will use a telemetry initializer'});
-  // appInsights.addTelemetryInitializer(() => false); // Nothing is sent after this is executed;
-  alert('jo - done tracking');</script>"
-  `;
-
-  return ret;
+  return "";  
 }
 
 // calls next service as defined with env vars
 app.get('/api/cascade', function (req, res) {
+
+
     var clientIP = getClientAddress(req);
+
+    console.log (Date.UTC);
+    console.log("Headerinfo:");    
+    console.log(req.headers);
+
     var url = config.protocol+"://"+config.serviceendpointhost +":" +config.serviceendpointport  + config.serviceendpointpath;    
 
     // add query para "sub" for every subsequent query. This is used to indicate to the next called service to return a value in a useful format.

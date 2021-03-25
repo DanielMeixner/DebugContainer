@@ -6,7 +6,6 @@ config.serviceendpointpath = process.env.SERVICEENDPOINTPATH;
 config.serviceendpointport = process.env.SERVICEENDPOINTPORT;
 config.myvar = process.env.MYVAR;
 config.protocol = process.env.PROTOCOL || "http";
-
 console.log(process.env);
-
+config.disableAppInsights = process.env.DISABLEAPPINSIGHTS || 0;
 module.exports = config;
