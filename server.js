@@ -1,10 +1,31 @@
-const http = require('http');
+require('dotenv').config();
+const config = require('./config')
+let appInsights = null;
+if( config.disableAppInsights!=1)
+{ 
+  appInsights = require('applicationinsights');
+}
+
 const express = require('express');
 const app = express();
-const config = require('./config')
-const request = require('request');
 const rp = require('request-promise');
 
+
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Referrer-Policy", "unsafe-url");
+  next();
+});
+
+if( config.disableAppInsights!=1)
+{
+  appInsights.setup().setSendLiveMetrics(true);
+  appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = process.env.HOSTNAME;
+  appInsights.start();
+}
 
 var htmlrequesticon = '<i class="fas fa-arrow-down"></i></br>';
 var htmlusericon = '<i class="fas fa-user"></i></br>';
@@ -13,6 +34,14 @@ getClientAddress = function (req) {
     return req.connection.remoteAddress;
 };
 
+
+var pubdirpath=require('path').join(__dirname, 'public');
+console.log("... serving " + pubdirpath);
+var pubdir = express.static(pubdirpath);
+
+
+
+app.use('/public', pubdir);
 
 app.get('/static', (req, res) => {
     res.sendFile('static/static.html', { root: "." });
@@ -37,6 +66,10 @@ app.get('/ping', function (req, res) {
 });
 
 app.get('/api/whoareu', function (req, res) {
+  console.log (Date.UTC);
+    console.log("Headerinfo:");
+    console.log(req.headers);
+
     var clientIP = getClientAddress(req);
     var addresses = getHostIps();
     if(req.query.sub==undefined)
@@ -55,10 +88,43 @@ app.get('/api/whoareu', function (req, res) {
     res.send();    
 });
 
+function addAI()
+{
+    var block = "<script type=\"text/javascript\" src=\"/public/get.js\"></script>"
+    if( config.disableAppInsights!=1)
+    {
+      block+="<script type=\"text/javascript\" \">var aikey='"+process.env.APPINSIGHTS_INSTRUMENTATIONKEY+"'</script>";
+      return block + "<script type=\"text/javascript\" src=\"/public/appinsights.js\"></script>";
+    }
+    else
+    {
+      return block;
+    }
+}
+
+
+function addButton()
+{
+    // return "<button onclick=\"httpGet('http://51.104.163.255/api/cascade')\">Click me</button>";
+    return "<button onclick=\"httpGet('http://dmx-apimm.azure-api.net/redgreenyellow/cascade')\">Click me</button>";
+}
+
+function addAIEvent(msg)
+{
+  return "";  
+}
+
 // calls next service as defined with env vars
 app.get('/api/cascade', function (req, res) {
+
+
     var clientIP = getClientAddress(req);
-    var url = "http://"+config.serviceendpointhost +":" +config.serviceendpointport  + config.serviceendpointpath;    
+
+    console.log (Date.UTC);
+    console.log("Headerinfo:");    
+    console.log(req.headers);
+
+    var url = config.protocol+"://"+config.serviceendpointhost +":" +config.serviceendpointport  + config.serviceendpointpath;    
 
     // add query para "sub" for every subsequent query. This is used to indicate to the next called service to return a value in a useful format.
     // it is also used to indicate the position in the sequence of calls.
@@ -75,17 +141,18 @@ app.get('/api/cascade', function (req, res) {
 
     console.log("start cascading... " + url);
 
-    console.log(req.headers);
+    // console.log(req.headers);
 
     // call next service
     var o= {
     headers: {
         /* propagate the dev space routing header */
-        'kubernetes-route-as': req.headers['kubernetes-route-as']
+        'kubernetes-route-as': req.headers['kubernetes-route-as'],
+        'custom-header': 'custom'+ Date.now()
      }
     }
 
-    console.log("route-as: "+ req.headers['kubernetes-route-as']);
+    // console.log("route-as: "+ req.headers['kubernetes-route-as']);
     rp.get(url,o)
         .then(function (data) {
             console.log("Data received from ... " +url);          
@@ -110,6 +177,10 @@ app.get('/api/cascade', function (req, res) {
                 var htmlhead = "" +
                     "<html>" +
                     "<head>" +
+                    
+                    addAI() +
+                    addAIEvent("'cascade'" )+
+
                     "<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\" integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\">" +
                     "<style>" +
                     "canvas {float: left;width:100px;height:100px; }" +
@@ -120,6 +191,7 @@ app.get('/api/cascade', function (req, res) {
                     '<script src="https://kit.fontawesome.com/a076d05399.js"></script>' +
                     "</head>" +
                     "<body>" +
+                    addButton()+
                     "<h1>Cascading API calls</h1>";                
                 var htmlend = "</body></html>";
               
@@ -153,6 +225,7 @@ function wrapdata(datastring)
 }
 
 
+
 app.get('/', function (req, res) {
     var clientIP = getClientAddress(req);
     var addresses = getHostIps();
@@ -160,7 +233,7 @@ app.get('/', function (req, res) {
 
     tabs = "\t\t";
 
-    res.end('<html><body bgcolor=' + config.color + '><h1>DebugContainer</h1>' +
+    res.end('<html><head>'+addAI()+'Hello'+'</head> +<body bgcolor=' + config.color + '><h1>DebugContainer</h1>' +
         "<p>Make sure you started this container as described <a href=\"https://github.com/DanielMeixner/DebugContainer\">here</a>. </p>" +
         "<p>You can start this container multiple times locally. Make sure you provide your docker bridge gateway IP as SERVICEENDPOINTHOST.</p>" +
 
