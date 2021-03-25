@@ -1,4 +1,4 @@
-# dummy config map for use with local process
+# dummy config map for demo use with "Bridge to Kubenernetes"
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -17,6 +17,7 @@ data:
     color.bad=yellow
     allow.textmode=true
 ---
+# Ingress for demo for "Bridge to Kubernetes"
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -26,6 +27,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
+  # adjust your hosts file to resolve mying.blub to the IP of your ingress
   - host: mying.blub  
     http:
       paths:
@@ -34,6 +36,10 @@ spec:
             serviceName: svca
             servicePort: 80
 ---
+# first service in a chain of services. (svca calls svcb which calls svcc)
+# Only svca is available via public IP (therefore type: LoadBalancer)
+# For Bridge to Kubernetes this is not required (you use the ingress for B2K)
+# Find the corresponding deployments in a separate file for simple apply/delete.
 apiVersion: v1
 kind: Service
 metadata:

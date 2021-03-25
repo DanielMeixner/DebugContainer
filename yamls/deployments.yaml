@@ -23,7 +23,8 @@ spec:
     spec:
       containers:
       - name: appa
-        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:latest
+        # this image contains setup for application insights. Set the APPINSIGHTS_INSTRUMENTATIONKEY correctly.
+        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:ai
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -39,21 +40,7 @@ spec:
           - name: "SERVICEENDPOINTPORT"
             value: "80"
           - name: "APPINSIGHTS_INSTRUMENTATIONKEY"
-            value: "YOUR-APP-INSIGHTS-KEY"
-      - name: agent
-        image: otel/opentelemetry-collector-contrib-dev:latest
-        args:
-        - --config=/conf/agent.yaml
-        volumeMounts:
-        - mountPath: /conf
-          name: agent-config
-      volumes:
-      - configMap:
-          items:
-          - key: agent.yaml
-            path: agent.yaml
-          name: agent-config
-        name: agent-config
+            value: "YOUR-APP-INSIGHTS-KEY"      
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -79,7 +66,8 @@ spec:
     spec:
       containers:
       - name: appb
-        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:latest
+         # this image contains setup for application insights. Set the APPINSIGHTS_INSTRUMENTATIONKEY correctly.
+        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:ai
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -135,7 +123,8 @@ spec:
     spec:
       containers:
       - name: appc
-        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:latest
+         # this image contains setup for application insights. Set the APPINSIGHTS_INSTRUMENTATIONKEY correctly.
+        image: dmxacrmaster-microsoft.azurecr.io/debugcontainer:ai
         imagePullPolicy: Always
         ports:
           - containerPort: 80
